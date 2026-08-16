@@ -1,0 +1,40 @@
+{
+  "name": "letsbox",
+  "version": "1.0.0",
+  "description": "Connect Codex to every entitled Lets Box workflow through one authenticated Remote MCP.",
+  "author": {
+    "name": "LetsBox"
+  },
+  "homepage": "https://app.letsai.team",
+  "repository": "https://github.com/sorashiba11/letsbox-plugin",
+  "license": "Proprietary",
+  "keywords": [
+    "letsbox",
+    "automation",
+    "ebay",
+    "remote-mcp"
+  ],
+  "interface": {
+    "displayName": "Lets Box",
+    "shortDescription": "Use every entitled Lets Box workflow from one connection.",
+    "longDescription": "Lets Box discovers your current contract after login and exposes only entitled Remote MCP workflows. New server-side workflows become available without installing local skill folders or reinstalling the plugin.",
+    "developerName": "LetsBox",
+    "category": "Productivity",
+    "capabilities": [
+      "Entitlement-aware workflow catalog",
+      "Governed eBay profit research",
+      "Local-secret and local-artifact guidance",
+      "Tenant-isolated history"
+    ],
+    "websiteURL": "https://app.letsai.team",
+    "privacyPolicyURL": "https://mcp.letsai.team/legal/privacy",
+    "termsOfServiceURL": "https://mcp.letsai.team/legal/terms",
+    "defaultPrompt": [
+      "利用できるLets Boxスキルを一覧にして。",
+      "予約商品5件を読み取り専用でeBayリサーチして。",
+      "Lets Boxの直近の実行履歴を確認して。"
+    ],
+    "brandColor": "#5B3F67"
+  },
+  "mcpServers": "./.mcp.json"
+}

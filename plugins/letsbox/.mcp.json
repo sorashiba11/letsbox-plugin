@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "letsbox": {
+      "type": "http",
+      "url": "https://mcp.letsai.team/mcp",
+      "oauth": {
+        "client_id": "6OnzMqzQDxGJbOiz4iiySULm"
+      }
+    }
+  }
+}
