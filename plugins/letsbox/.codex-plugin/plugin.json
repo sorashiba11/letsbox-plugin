@@ -1,7 +1,7 @@
 {
   "name": "letsbox",
-  "version": "1.0.0",
-  "description": "Connect Codex to every entitled Lets Box workflow through one authenticated Remote MCP.",
+  "version": "1.0.1",
+  "description": "Discover entitled Lets Box workflows and run Remote-ready workflows through one authenticated MCP.",
   "author": {
     "name": "LetsBox"
   },
@@ -16,8 +16,8 @@
   ],
   "interface": {
     "displayName": "Lets Box",
-    "shortDescription": "Use every entitled Lets Box workflow from one connection.",
-    "longDescription": "Lets Box discovers your current contract after login and exposes only entitled Remote MCP workflows. New server-side workflows become available without installing local skill folders or reinstalling the plugin.",
+    "shortDescription": "Discover entitled workflows from one connection.",
+    "longDescription": "Lets Box discovers your current contract after login and exposes only entitled workflows. Remote-ready workflows run through MCP; workflows still being migrated are clearly marked as legacy fallback.",
     "developerName": "LetsBox",
     "category": "Productivity",
     "capabilities": [
