@@ -1,6 +1,6 @@
 # Lets Box plugin
 
-Lets Boxの契約中ワークフローを、1つのOAuth接続から利用するCodexプラグインです。個別のスキルフォルダは顧客PCへ配置しません。
+Lets Boxの契約中ワークフローを、1つのOAuth接続から利用するCodexプラグインです。顧客が個別のローカルスキルフォルダを管理する必要はありません。
 
 ## URLからの導入
 
@@ -10,6 +10,16 @@ codex plugin add letsbox@letsbox
 ```
 
 導入後は新しいCodexタスクを開始し、表示されたLets Box OAuthを完了します。OpenAI Marketplaceの公開審査前でも、このGitHub URLを知っている利用者へ直接配布できます。
+
+## Remoteリサーチの起動
+
+Codexでは、次のようにLets Plugin内のRemote専用スキルを明示して起動します。`@`はChatGPT用で、Codexのスキル指定には`$`を使います。
+
+```text
+$letsbox:run-ebay-profit-research Lets PluginのRemote MCP版でeBay利益リサーチを最後まで実行して。ローカル版は使用しないで。
+```
+
+件数を指定しなければ15件です。1〜15件の範囲で明示した場合は、その件数を優先します。
 
 ## 境界
 
