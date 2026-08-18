@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "letsbox": {
-      "type": "http",
-      "url": "https://mcp.letsai.team/mcp",
-      "oauth": {
-        "client_id": "6OnzMqzQDxGJbOiz4iiySULm"
-      }
+      "command": "python3",
+      "args": ["./scripts/start_mcp.py"],
+      "cwd": "."
     }
   }
 }

@@ -21,9 +21,9 @@ The service owns campaign state, evidence, retries, tenant authorization, and mu
 3. For a new research request, start one campaign:
    - If the user did not specify a count, omit `max_items`; the service defaults to 15. Verify the returned `itemCount` is 15.
    - If the user specified a count from 1 to 15, pass that exact `max_items` and verify the returned `itemCount` matches.
-   - Omit `mutation_mode` for ordinary research. The service applies its safety default without exposing it in the launch prompt.
-   - If the user explicitly requests external updates, check `preflight.mutations_enabled` before starting. If false, stop and report that this Remote connection cannot perform the update; never switch to a local workflow. If deletion was requested, also require `preflight.deletions_enabled` before starting.
-   - Only when the requested capability is enabled and explicitly requested may `preview` or `write` be selected. All existing authorization, scope, preview, single-writer, and deletion-approval gates still apply.
+   - Do not send `mutation_mode`; the public tool has no read-only, dry-run, preview, or write-mode switch.
+   - Validated EPS registration, price, and quantity updates run automatically when the tenant's approved non-deletion route is enabled. If `preflight` reports that automatic non-deletion updates are disabled, stop and report that the Remote connection is not yet enabled for that tenant; never switch to a local workflow.
+   - Deletion is separate and never starts automatically. It requires the deletion preview, admin scope, and a fresh explicit approval described below.
    - The call creates one bounded campaign. Continue that campaign; never start a replacement because work is slow or waiting.
 4. Poll `get_campaign` until terminal. When it reports `waiting_for_judgement`, call `claim_judgement` once and handle only the returned mission.
 5. Submit each mission through `submit_judgement` with its unchanged mission ID, lease token, prompt hash, candidate ID, and required structured verdict.
@@ -31,7 +31,7 @@ The service owns campaign state, evidence, retries, tenant authorization, and mu
 7. For `competitor`, examine the supplied price-ordered batch and return only the ordered prefix allowed by the mission prompt. Do not include unexamined candidates.
 8. If a mission cannot be decided within its bounded retry, use the server-directed manual-review path. A held campaign is not complete.
 9. After terminal status, call `get_report`. Verify the reported item count, supplier coverage, competitor coverage, profit coverage, hold reasons, and mutation counts. Use `list_items`, `get_item`, and `list_artifacts` for bounded inspection; never assemble the entire raw campaign payload.
-10. A campaign using the default safety mode must finish with `externalMutationCount: 0`. For an enabled and explicitly requested preview or write campaign, keep the existing preview and apply gates intact.
+10. After validation, verify the campaign's non-deletion mutation counts and final report. Use `apply_updates` only as an idempotent retry for failed EPS registration, price, or quantity operations; it never includes deletion.
 11. Treat deletion separately. Present exact targets and the preview hash, then call `approve_deletions` only after a fresh explicit approval containing the required phrase and an unexpired campaign-specific token.
 12. Report the terminal status, requested/default count check, completed/held/failed item counts, supplier and profit coverage, hold reasons, and mutation counts. Never label waiting, held, cancelled, or partial work complete.
 
@@ -45,6 +45,8 @@ The service owns campaign state, evidence, retries, tenant authorization, and mu
 ## Connection and support
 
 - Production MCP URL: `https://mcp.letsai.team/mcp`.
+- When configured, the plugin's local stdio bridge reads the EPS account email and SerpApi key from `$CODEX_HOME/plugin-data/letsbox/credentials.json` (or `~/.codex/plugin-data/letsbox/credentials.json`) and forwards them only as request-scoped HTTPS headers. Configure them with `python3 scripts/configure_credentials.py`; never accept or echo either value in chat. Existing Research connections may retain their linked service-managed account when this optional local file is absent.
+- Customer credentials are never tool arguments and are never stored in the Remote MCP database.
 - A failed OAuth or preflight is a closed gate. Do not switch to the local version.
 - For support, provide only the campaign ID and timestamp. Never include OAuth tokens, EPS credentials, API keys, or raw customer artifacts.
 
@@ -58,4 +60,4 @@ Return a compact campaign summary with the campaign ID, terminal state, exact it
 
 ## Customization guide
 
-Customers may change only the requested item count from 1 to 15 and whether approved non-deletion updates should run. Tool order, tenant IDs, judgement prompts, mutation gates, deletion confirmation text, and evidence handles are server-controlled and must not be edited.
+Customers may change only the requested item count from 1 to 15. Non-deletion updates are automatic when the server's approved route and deployment gates allow them. Tool order, tenant IDs, judgement prompts, mutation gates, deletion confirmation text, and evidence handles are server-controlled and must not be edited.
