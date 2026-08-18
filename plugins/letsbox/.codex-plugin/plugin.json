@@ -1,7 +1,7 @@
 {
   "name": "letsbox",
-  "version": "1.1.0",
-  "description": "Discover entitled Lets Box workflows and run Remote eBay Research and Restock through one authenticated MCP.",
+  "version": "1.2.0",
+  "description": "Discover entitled Lets Box workflows and run them through one authenticated Cloudflare Remote MCP.",
   "author": {
     "name": "LetsBox"
   },
@@ -14,27 +14,26 @@
     "ebay",
     "remote-mcp"
   ],
-  "skills": "./skills/",
   "interface": {
     "displayName": "Lets Box",
-    "shortDescription": "Discover entitled workflows from one connection.",
-    "longDescription": "Lets Box discovers your current contract after login and exposes only entitled workflows. Remote-ready workflows run through MCP; workflows still being migrated are clearly marked as legacy fallback.",
+    "shortDescription": "Discover entitled Remote MCP workflows from one connection.",
+    "longDescription": "Lets Box uses one first-party Auth Core connection. The Remote MCP server returns only the current account's D1-entitled catalog and contracts; no per-skill package is installed or registered in Codex.",
     "developerName": "LetsBox",
     "category": "Productivity",
     "capabilities": [
-      "Entitlement-aware workflow catalog",
-      "Governed eBay profit research",
-      "Governed eBay Restock",
-      "Local-secret and local-artifact guidance",
-      "Tenant-isolated history"
+      "Entitlement-aware Remote catalog",
+      "Cloudflare Remote MCP tools",
+      "Tenant-isolated contracts",
+      "First-party single login",
+      "Governed non-deletion boundaries"
     ],
     "websiteURL": "https://app.letsai.team",
     "privacyPolicyURL": "https://mcp.letsai.team/legal/privacy",
     "termsOfServiceURL": "https://mcp.letsai.team/legal/terms",
     "defaultPrompt": [
-      "利用できるLets Boxスキルを一覧にして。",
-      "$letsbox:run-ebay-profit-research Lets PluginのRemote MCP版でeBay利益リサーチを最後まで実行して。ローカル版は使用しないで。",
-      "$letsbox:run-ebay-restock Lets PluginのRemote MCP版でeBay在庫戻しを最後まで実行して。readモードと最安値更新は使用しないで。"
+      "利用できるLets BoxのRemoteスキルを一覧にして。",
+      "Lets BoxのRemote MCPから、権限のあるeBay利益リサーチを実行して。ローカルスキルは使用しないで。",
+      "Lets BoxのRemote MCPから、権限のあるeBay在庫戻しを実行して。削除と単独の最安値更新は使用しないで。"
     ],
     "brandColor": "#5B3F67"
   },
