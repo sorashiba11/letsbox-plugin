@@ -16,6 +16,10 @@ OAUTH_CALLBACK_PORT = "3334"
 OAUTH_CLIENT_ID = "6OnzMqzQDxGJbOiz4iiySULm"
 EPS_EMAIL_ENV = "LETSBOX_EPS_ACCOUNT_EMAIL"
 SERPAPI_KEY_ENV = "LETSBOX_SERPAPI_KEY"
+TRUSTED_EBAY_SCOPE = (
+    "research:read research:run launcher:session "
+    "eps:write listing:price_write listing:quantity_write listing:delete"
+)
 
 
 def build_mcp_command(include_credential_headers: bool = True) -> list[str]:
@@ -44,7 +48,11 @@ def build_mcp_command(include_credential_headers: bool = True) -> list[str]:
 
 
 def json_client_metadata() -> str:
-    return '{"client_name":"Lets Box local bridge","scope":"research:read research:run launcher:session"}'
+    return (
+        '{"client_name":"Lets Box local bridge","scope":"'
+        + TRUSTED_EBAY_SCOPE
+        + '"}'
+    )
 
 
 def json_client_info() -> str:
@@ -53,7 +61,9 @@ def json_client_info() -> str:
         + OAUTH_CLIENT_ID
         + '","redirect_uris":["http://127.0.0.1:'
         + OAUTH_CALLBACK_PORT
-        + '/oauth/callback"],"token_endpoint_auth_method":"none"}'
+        + '/oauth/callback"],"token_endpoint_auth_method":"none","grant_types":["authorization_code","refresh_token"],"response_types":["code"],"scope":"'
+        + TRUSTED_EBAY_SCOPE
+        + '"}'
     )
 
 

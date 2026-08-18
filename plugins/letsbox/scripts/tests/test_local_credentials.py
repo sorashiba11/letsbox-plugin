@@ -48,7 +48,11 @@ class LocalCredentialsTests(unittest.TestCase):
         self.assertIn("${LETSBOX_SERPAPI_KEY}", command)
         self.assertNotIn("synthetic-serpapi-key", command)
         self.assertIn("mcp-remote@0.1.38", command)
-        self.assertIn("research:read research:run launcher:session", command)
+        self.assertIn(
+            "research:read research:run launcher:session eps:write listing:price_write listing:quantity_write listing:delete",
+            command,
+        )
+        self.assertNotIn("admin:audit", command)
         self.assertIn("http://127.0.0.1:3334/oauth/callback", command)
         self.assertIn("6OnzMqzQDxGJbOiz4iiySULm", command)
         command_without_credentials = " ".join(build_mcp_command(False))
