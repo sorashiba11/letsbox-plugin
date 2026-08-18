@@ -53,6 +53,7 @@ class LocalCredentialsTests(unittest.TestCase):
             command,
         )
         self.assertNotIn("admin:audit", command)
+        self.assertIn("--host 127.0.0.1", command)
         self.assertIn("http://127.0.0.1:3334/oauth/callback", command)
         self.assertIn("6OnzMqzQDxGJbOiz4iiySULm", command)
         command_without_credentials = " ".join(build_mcp_command(False))

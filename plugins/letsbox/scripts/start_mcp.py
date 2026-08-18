@@ -29,6 +29,8 @@ def build_mcp_command(include_credential_headers: bool = True) -> list[str]:
         f"mcp-remote@{MCP_REMOTE_VERSION}",
         REMOTE_MCP_URL,
         OAUTH_CALLBACK_PORT,
+        "--host",
+        "127.0.0.1",
         "--transport",
         "http-only",
         "--silent",
