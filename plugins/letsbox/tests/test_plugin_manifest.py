@@ -10,7 +10,7 @@ class PluginManifestContractTests(unittest.TestCase):
         manifest = json.loads(
             (PLUGIN_ROOT / ".codex-plugin" / "plugin.json").read_text()
         )
-        self.assertNotIn("skills", manifest)
+        self.assertEqual(manifest["skills"], "./skills/")
         self.assertEqual(manifest["mcpServers"], "./.mcp.json")
 
         mcp = json.loads((PLUGIN_ROOT / ".mcp.json").read_text())
@@ -25,16 +25,21 @@ class PluginManifestContractTests(unittest.TestCase):
         self.assertNotIn("command", server)
         self.assertNotIn("args", server)
 
-    def test_no_local_bridge_or_skill_components_are_packaged(self):
+    def test_only_connection_guidance_skills_are_packaged(self):
+        # ローカルブリッジや業務スキルのpackage同梱は引き続き禁止。プラグインが
+        # 持ってよいローカルスキルは、接続・セットアップ案内の2つだけ。
         self.assertFalse((PLUGIN_ROOT / "scripts").exists())
-        skill_root = PLUGIN_ROOT / "skills"
-        self.assertFalse(skill_root.exists())
+        skills = sorted(
+            path.parent.name
+            for path in (PLUGIN_ROOT / "skills").glob("*/SKILL.md")
+        )
+        self.assertEqual(skills, ["letsbox-connection-check", "letsbox-setup"])
         packaged = [
             path
             for path in PLUGIN_ROOT.rglob("*")
             if path.is_file()
             and ".git" not in path.parts
-            and path.name in {"SKILL.md", "openai.yaml", "start_mcp.py"}
+            and path.name in {"openai.yaml", "start_mcp.py"}
         ]
         self.assertEqual(packaged, [])
 

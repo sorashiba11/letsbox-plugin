@@ -1,6 +1,6 @@
 {
   "name": "letsbox",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Discover entitled Lets Box workflows and run them through one authenticated Cloudflare Remote MCP.",
   "author": {
     "name": "LetsBox"
@@ -31,11 +31,13 @@
     "privacyPolicyURL": "https://mcp.letsai.team/legal/privacy",
     "termsOfServiceURL": "https://mcp.letsai.team/legal/terms",
     "defaultPrompt": [
+      "LetsBoxの接続とログイン中のアカウントを診断して。",
+      "LetsBoxの初回セットアップをして。",
       "利用できるLets BoxのRemoteスキルを一覧にして。",
-      "Lets BoxのRemote MCPから、権限のあるeBay利益リサーチを実行して。ローカルスキルは使用しないで。",
-      "Lets BoxのRemote MCPから、権限のあるeBay在庫戻しを実行して。削除と単独の最安値更新は使用しないで。"
+      "Lets BoxのRemote MCPから、権限のあるeBay利益リサーチを実行して。ローカルスキルは使用しないで。"
     ],
     "brandColor": "#5B3F67"
   },
+  "skills": "./skills/",
   "mcpServers": "./.mcp.json"
 }

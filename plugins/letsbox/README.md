@@ -2,12 +2,19 @@
 
 Lets Box is a thin Codex client for the Cloudflare Remote MCP at
 `https://mcp.letsai.team/mcp`. The plugin registers one **native remote MCP
-server** only: the host manages OAuth itself (the "authenticate" button /
+server**: the host manages OAuth itself (the "authenticate" button /
 first-connection browser login), and no local process, node runtime, or
-credential file is involved. It does not ship, register, or install per-skill
-`SKILL.md` packages; the entitlement-filtered catalog and every skill contract
-are returned by the Remote MCP after the first-party Auth Core session is
-established.
+credential file is involved. Business skills are never packaged locally; the
+entitlement-filtered catalog and every skill contract are returned by the
+Remote MCP after the first-party Auth Core session is established.
+
+The plugin ships exactly two local guidance skills (visible in the host's
+skill list):
+
+- `letsbox-connection-check` — 接続・アカウント診断（どのアカウントでログイン
+  しているか、権限・認証情報の状態、復旧手順の案内）
+- `letsbox-setup` — 初回セットアップ（ログイン確認と、eBayスキル用の
+  EPSメール/SerpApiキーの一度きりの登録）
 
 ## Install
 
