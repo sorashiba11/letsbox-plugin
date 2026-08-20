@@ -1,6 +1,6 @@
 {
   "name": "letsbox",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Discover entitled Lets Box workflows and run them through one authenticated Cloudflare Remote MCP.",
   "author": {
     "name": "LetsBox"
