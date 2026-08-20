@@ -8,13 +8,15 @@ credential file is involved. Business skills are never packaged locally; the
 entitlement-filtered catalog and every skill contract are returned by the
 Remote MCP after the first-party Auth Core session is established.
 
-The plugin ships exactly two local guidance skills (visible in the host's
+The plugin ships exactly three local guidance skills (visible in the host's
 skill list):
 
 - `letsbox-connection-check` — 接続・アカウント診断（どのアカウントでログイン
   しているか、権限・認証情報の状態、復旧手順の案内）
 - `letsbox-setup` — 初回セットアップ（ログイン確認と、eBayスキル用の
   EPSメール/SerpApiキーの一度きりの登録）
+- `letsbox-switch-account` — アカウント切り替え（ブラウザ側ログアウト→
+  再ログイン→切り替え確認までの案内）
 
 ## Install
 

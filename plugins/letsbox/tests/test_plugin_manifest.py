@@ -33,7 +33,10 @@ class PluginManifestContractTests(unittest.TestCase):
             path.parent.name
             for path in (PLUGIN_ROOT / "skills").glob("*/SKILL.md")
         )
-        self.assertEqual(skills, ["letsbox-connection-check", "letsbox-setup"])
+        self.assertEqual(
+            skills,
+            ["letsbox-connection-check", "letsbox-setup", "letsbox-switch-account"],
+        )
         packaged = [
             path
             for path in PLUGIN_ROOT.rglob("*")
