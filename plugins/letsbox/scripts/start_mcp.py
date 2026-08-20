@@ -10,6 +10,7 @@ user restarting anything by hand.
 
 from __future__ import annotations
 
+import glob
 import os
 import shutil
 import signal
@@ -32,9 +33,34 @@ TRUSTED_EBAY_SCOPE = (
 )
 
 
-def build_mcp_command(include_credential_headers: bool = True) -> list[str]:
+def resolve_npx() -> str | None:
+    """npx from PATH, else from the usual install locations.
+
+    GUI-launched MCP hosts spawn this launcher without the user's shell
+    PATH; requiring PATH alone made every Lets Box tool silently disappear
+    there, and the host then improvised its own OAuth in a browser.
+    """
+    found = shutil.which("npx")
+    if found:
+        return found
+    home = os.path.expanduser("~")
+    candidates = [
+        os.path.join(home, ".local", "node", "bin", "npx"),
+        "/opt/homebrew/bin/npx",
+        "/usr/local/bin/npx",
+        os.path.join(home, ".volta", "bin", "npx"),
+        os.path.join(home, ".asdf", "shims", "npx"),
+        *sorted(glob.glob(os.path.join(home, ".nvm", "versions", "node", "*", "bin", "npx")), reverse=True),
+    ]
+    for candidate in candidates:
+        if os.access(candidate, os.X_OK):
+            return candidate
+    return None
+
+
+def build_mcp_command(include_credential_headers: bool = True, npx: str = "npx") -> list[str]:
     command = [
-        "npx",
+        npx,
         "--yes",
         f"mcp-remote@{MCP_REMOTE_VERSION}",
         REMOTE_MCP_URL,
@@ -109,9 +135,13 @@ def setup_notice() -> str:
 
 
 def main() -> int:
-    npx = shutil.which("npx")
+    npx = resolve_npx()
     if npx is None:
-        print("Lets Box local bridge requires npx.", file=sys.stderr)
+        print(
+            "Lets Box local bridge requires npx (checked PATH, ~/.local/node, "
+            "Homebrew, /usr/local, volta, asdf, nvm).",
+            file=sys.stderr,
+        )
         return 69
 
     # Never run a credential-less bridge: it would cache "no headers" for its
@@ -131,8 +161,11 @@ def main() -> int:
     child_environment = os.environ.copy()
     child_environment[EPS_EMAIL_ENV] = credentials.eps_account_email
     child_environment[SERPAPI_KEY_ENV] = credentials.serpapi_key
+    # npx re-executes node from PATH, so the resolved install must be on the
+    # child's PATH even when the host spawned us without it.
+    child_environment["PATH"] = os.path.dirname(npx) + os.pathsep + child_environment.get("PATH", "")
     try:
-        child = subprocess.Popen(build_mcp_command(True), env=child_environment)
+        child = subprocess.Popen(build_mcp_command(True, npx), env=child_environment)
     except OSError:
         print("Lets Box local bridge could not start mcp-remote.", file=sys.stderr)
         return 69

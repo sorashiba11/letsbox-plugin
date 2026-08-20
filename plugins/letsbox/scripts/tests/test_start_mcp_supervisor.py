@@ -16,6 +16,7 @@ from start_mcp import (  # noqa: E402
     build_mcp_command,
     credentials_state,
     read_optional_credentials,
+    resolve_npx,
     setup_notice,
 )
 
@@ -56,6 +57,27 @@ class StartMcpSupervisorTests(unittest.TestCase):
         command = " ".join(build_mcp_command(True))
         self.assertIn("X-LetsBox-Eps-Account-Email: ${LETSBOX_EPS_ACCOUNT_EMAIL}", command)
         self.assertIn("X-LetsBox-SerpApi-Key: ${LETSBOX_SERPAPI_KEY}", command)
+
+    def test_bridge_command_runs_the_resolved_npx_path(self) -> None:
+        command = build_mcp_command(True, "/synthetic/node/bin/npx")
+        self.assertEqual(command[0], "/synthetic/node/bin/npx")
+
+    def test_resolve_npx_finds_known_installs_without_shell_path(self) -> None:
+        # GUI-launched hosts spawn the launcher without the user's shell PATH;
+        # the resolver must still find a standard node install under HOME.
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            node_bin = Path(temporary_directory) / ".local" / "node" / "bin"
+            node_bin.mkdir(parents=True)
+            npx = node_bin / "npx"
+            npx.write_text("#!/bin/sh\n")
+            npx.chmod(0o755)
+            with patch.dict(os.environ, {"PATH": "", "HOME": temporary_directory}, clear=False):
+                self.assertEqual(resolve_npx(), str(npx))
+
+    def test_resolve_npx_reports_absence_instead_of_guessing(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            with patch.dict(os.environ, {"PATH": "", "HOME": temporary_directory}, clear=False):
+                self.assertIsNone(resolve_npx())
 
 
 if __name__ == "__main__":
