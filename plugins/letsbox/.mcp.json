@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "letsbox": {
-      "command": "python3",
-      "args": ["./scripts/start_mcp.py"],
-      "cwd": "."
+      "type": "http",
+      "url": "https://mcp.letsai.team/mcp",
+      "note": "LetsBox Remote MCP. OAuth on first connection (LetsBox login). Runtime credentials (EPS account email + SerpApi key) are stored server-side per tenant via the set_runtime_credentials tool; no local bridge, node, or credential file is required."
     }
   }
 }

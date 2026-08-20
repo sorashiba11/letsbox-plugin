@@ -1,10 +1,13 @@
 # Lets Box plugin
 
 Lets Box is a thin Codex client for the Cloudflare Remote MCP at
-`https://mcp.letsai.team/mcp`. The plugin registers one MCP server only. It
-does not ship, register, or install per-skill `SKILL.md` packages; the
-entitlement-filtered catalog and every skill contract are returned by the
-Remote MCP after the first-party Auth Core session is established.
+`https://mcp.letsai.team/mcp`. The plugin registers one **native remote MCP
+server** only: the host manages OAuth itself (the "authenticate" button /
+first-connection browser login), and no local process, node runtime, or
+credential file is involved. It does not ship, register, or install per-skill
+`SKILL.md` packages; the entitlement-filtered catalog and every skill contract
+are returned by the Remote MCP after the first-party Auth Core session is
+established.
 
 ## Install
 
@@ -18,19 +21,13 @@ and zero Lets Box-specific local skills. eBay Research, eBay Restock, CEO
 Brain, and other entitled workflows are discovered through the Remote MCP's
 server-side `list_skills`/`get_skill` contract and D1 effective entitlements.
 
-## Optional eBay bridge credentials
+## Runtime credentials (eBay skills only)
 
-Only the Remote MCP bridge may read the customer's optional EPS account email
-and SerpApi key from `$CODEX_HOME/plugin-data/letsbox/credentials.json` (or
-`~/.codex/plugin-data/letsbox/credentials.json`). Configure it once with:
-
-```text
-python3 scripts/configure_credentials.py
-```
-
-The file is outside the plugin cache, uses mode `0600`, and is never included
-in the plugin bundle, MCP arguments, tool arguments, logs, or reports. It is a
-request-scoped bridge input, not a local skill package or a catalog source.
+The eBay research/restock skills need the customer's EPS account email and
+SerpApi key. They are stored **server-side per tenant** in one encrypted
+envelope via the `set_runtime_credentials` tool — call it once (or on key
+rotation); `get_runtime_credentials_status` reports the non-secret state.
+CEO Brain and other skills need no runtime credentials at all.
 
 ## Runtime boundary
 
