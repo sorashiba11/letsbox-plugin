@@ -35,7 +35,14 @@ class PluginManifestContractTests(unittest.TestCase):
         )
         self.assertEqual(
             skills,
-            ["letsbox-connection-check", "letsbox-setup", "letsbox-switch-account"],
+            [
+                "letsbox-connection-check",
+                "letsbox-credentials",
+                "letsbox-progress",
+                "letsbox-setup",
+                "letsbox-support-report",
+                "letsbox-switch-account",
+            ],
         )
         packaged = [
             path

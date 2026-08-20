@@ -1,6 +1,6 @@
 {
   "name": "letsbox",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Discover entitled Lets Box workflows and run them through one authenticated Cloudflare Remote MCP.",
   "author": {
     "name": "LetsBox"
@@ -32,8 +32,11 @@
     "termsOfServiceURL": "https://mcp.letsai.team/legal/terms",
     "defaultPrompt": [
       "LetsBoxの接続とログイン中のアカウントを診断して。",
-      "LetsBoxのアカウントを切り替えたい。",
       "LetsBoxの初回セットアップをして。",
+      "LetsBoxのアカウントを切り替えたい。",
+      "eBay用のキー（EPSメール/SerpApiキー)を差し替えたい。",
+      "いま実行中のLetsBoxの作業の進捗を確認して。",
+      "LetsBoxで不具合が出たのでサポート用の報告文を作って。",
       "利用できるLets BoxのRemoteスキルを一覧にして。",
       "Lets BoxのRemote MCPから、権限のあるeBay利益リサーチを実行して。ローカルスキルは使用しないで。"
     ],
